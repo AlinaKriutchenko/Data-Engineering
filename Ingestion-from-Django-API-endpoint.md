@@ -116,8 +116,7 @@ merge into intern.tbl_bronze_venue target
 when matched
   then update set *
 when not matched
-  then insert *
-  
+  then insert *  
 ```
 
-### To scheldule a job 
+### The notebook is ready for a scheduled job.
