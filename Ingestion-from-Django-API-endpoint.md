@@ -1,8 +1,5 @@
 ## Data Ingestion from the Django API endpoint for daily scheduled job (Venue-Landing-To-Bronze)
 
-Default Language: Python
-
-
 A token is used to create an authenticated request to get venue data from API endpoint. <br/>
 An upsert workflow: an API request to a public API, storing the data. <br/>
 A scheduled job for daily updates of records.
