@@ -12,7 +12,7 @@ https://spark.apache.org/docs/2.1.0/api/python/pyspark.sql.html#module-pyspark.s
 from pyspark.sql import functions
 ```
 
-### Register 'event-group' table with 'is_recurring' and 'is_recurring' values
+#### Register 'event-group' table with 'is_recurring' and 'is_recurring' values
 
 
 ```
@@ -27,7 +27,7 @@ def is_recurring(entities):
 spark.udf.register('is_recurring', is_recurring)
 ```
 
-### We want to have non-duplicated events by tracking the `updated` flag and only keep the latest updated information
+#### We want to have non-duplicated events by tracking the `updated` flag and only keep the latest updated information
 ```
 create or replace temporary view tmp_deleted_event as (
   select id
@@ -35,7 +35,7 @@ create or replace temporary view tmp_deleted_event as (
   where state = 'deleted'
 );
 ```
-### Command
+#### Create a temporary view
 ```
 create or replace temporary view tmp_casted_event as (
   select 
@@ -84,7 +84,7 @@ create or replace temporary view tmp_casted_event as (
   )
 );
 ```
-### COMMAND
+#### Create
 ```
 
 create or replace temporary view tmp_unified_events as (
@@ -125,7 +125,7 @@ create or replace temporary view tmp_unified_events as (
   and row_num = 1
 );
 ```
-### One-off table creation
+#### One-off table creation
 
 ```
 # Run only once
@@ -134,7 +134,7 @@ create or replace temporary view tmp_unified_events as (
 #   from tmp_unified_events
 # );
 ```
-# Merging new events with old ones
+#### Merging new events with old ones
 ```
 merge into predicthq.tbl_silver_events target
   using tmp_unified_events source
@@ -144,7 +144,7 @@ when matched
 when not matched
   then insert *;
 ```
-### Remove deleted events in updated table
+#### Remove deleted events in updated table
 ```
 delete from predicthq.tbl_silver_events tgt
 where tgt.id in (
@@ -152,7 +152,7 @@ where tgt.id in (
   from tmp_deleted_event
 );
 ```
-### COMMAND
+#### Optimize
 ```
 optimize predicthq.tbl_silver_events
 zorder by updated, id;
