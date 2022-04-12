@@ -41,7 +41,9 @@ create or replace temporary view tmp_deleted_event as (
   where state = 'deleted'
 );
 ```
-#### Create a temporary view
+#### Creation of temporary view:
+* 'tmp_casted_event' from 'predicthq.tbl_bronze_events' where 'id' not in 'tmp_deleted_event'
+* cast(end as timestamp) selects the last unique timestamp records and removes other duplicates.
 ```
 create or replace temporary view tmp_casted_event as (
   select 
@@ -90,6 +92,9 @@ create or replace temporary view tmp_casted_event as (
   )
 );
 ```
+#### Creation of temporary view:
+* 'tmp_unified_events' from 'tmp_casted_event' where 'id' is not null and 'row_num' is 1
+
 #### Create
 ```
 
