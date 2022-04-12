@@ -1,17 +1,17 @@
-# Databricks Notebook. track-bronze-to-silver
+# Track-bronze-to-silver. 
 
 Merge venue information for account id, customer store location, business name to bronze track
 
 
-### Import
+### Import function
 ```
 from pyspark.sql.functions import col
 ```
 
 
-### 
-
-
+### First dataframe. Creation of the temporary view:
+* Selection of four columns from **'db_name.tbl_bronze_venue'**: business_nam, customer_store_id, account_id and account_name as **temp_venue**.
+* Group **temp_venue** by **id**.
 ```
 %sql
 create or replace temporary view temp_venue as (
@@ -25,7 +25,10 @@ create or replace temporary view temp_venue as (
 );
 ```
 
-### temp_track from db_name.tbl_bronze_track
+### Second Dataframe. Creation of the temporary view from **db_name.tbl_bronze_track** as temp_track where:
+* **cast** is a function to change column datatype.
+* **cast** timestamp column as a timestamp type.
+* **cast** duration integer column a duration type.
 ```
 %sql
 create or replace temporary view temp_track as (
@@ -43,33 +46,43 @@ create or replace temporary view temp_track as (
 ```
 track_bronze = spark.read.table("temp_track")
 venue_bronze = spark.read.table("temp_venue")
-
-display(track_bronze)
-display(venue_bronze)
-
-display(venue_bronze.groupBy('id').count())
 ```
 
 
-### Add column from venue_bronze to venue_track:
-business_name, customer_store_id, account_id,  account_name)
+### Merging track_bronze and venue_bronze pyspark dataframes.
+Joining 
+* business_name, customer_store_id, account_id,  account_name columns from venue_bronze
+* all columns from track_bronze
+* join where venue_id from track_bronze matches the id from venue_bronze.
 ```
 silver_track = (track_bronze
              .join(venue_bronze, track_bronze["venue_id"] == venue_bronze["id"])             
              .select(track_bronze['*'], venue_bronze.business_name, venue_bronze.customer_store_id, venue_bronze.account_id, venue_bronze.account_name))
-display(silver_track)
 ```
 
-### Create 
-db_name.tbl_silver_track
+### Create db_name.tbl_silver_track (target for future dumps)
+
+* **write.saveAsTable** saves **silver_track** pyspark dataframe a temp table.
+* **.write.mode("overwrite")** overwrites the table.
+* The **db_name.tbl_silver_track** only created during the first notebook run and later used a target table, where new data is being dumped.
+
 ```
 # Run this only once
 #silver_track.write.saveAsTable('db_name.tbl_silver_track')
-#track_bronze.write.mode("overwrite").saveAsTable("db_name.tbl_silver_track")
+#silver_bronze.write.mode("overwrite").saveAsTable("db_name.tbl_silver_track")
 ```
 
-### Merge new data into
-db_name.tbl_silver_track
+### Merging the new data into db_name.tbl_silver_track
+**tmp_merge** used as a target and specified separately:
+* from **temp_track** all columns selected.
+* from **temp_venue** four columns selected.
+* the left join used for **temp_venue** where **id** in temp_venue mathes **venue_id** in temp_track.
+
+Merging:
+* The new data merged into db_name.tbl_silver_track as tgt.
+* When the id is matched, the data updated. 
+* When the id is unmatched (new), the new records are inserted.
+
 ```
 %sql
 with tmp_merge as (
