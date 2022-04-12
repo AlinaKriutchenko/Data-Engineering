@@ -50,7 +50,7 @@ venue_bronze = spark.read.table("temp_venue")
 
 
 ### Merging track_bronze and venue_bronze pyspark dataframes.
-Joining 
+Joining:
 * business_name, customer_store_id, account_id,  account_name columns from venue_bronze
 * all columns from track_bronze
 * join where venue_id from track_bronze matches the id from venue_bronze.
