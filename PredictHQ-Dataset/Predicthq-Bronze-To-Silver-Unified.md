@@ -1,6 +1,7 @@
 # Databricks Notebook. Predicthq-Bronze-To-Silver-Unified (PredictHQ)
 
-A single unified events dataset where only unique active events are kept. Grouping by recurring and single events.
+A single unified events dataset where only unique active events are kept. Grouping by recurring and single events. <br/>
+Duplicates removal.
 
 
 ### Import function module
