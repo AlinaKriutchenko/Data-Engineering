@@ -46,7 +46,7 @@ schema_hints = """
 """
 ```
 
-### To remove checkpoint_path if table need to be deleted and loaded again
+### To remove checkpoint_path if the table needs to be deleted and loaded again
 
 ```
 #dbutils.fs.rm(checkpoint_path, recurse=True)
