@@ -1,10 +1,10 @@
 # A creation of Predicthq-Bronze-To-Silver-Unified from PredictHQ data.
 
 * Duplicates removed
-* Only active events a kept.
-* Update
-* Removal deleted events from old records.
-* Adding an 'event-group' column for single (true) and recurring events (false).
+* Only active events a kept
+* Merging new data updates
+* Removal deleted events from old records
+* Adding an 'event-group' column for single (true) and recurring events (false)
 
 ### Import function module
 
@@ -31,7 +31,7 @@ def is_recurring(entities):
 spark.udf.register('is_recurring', is_recurring)
 ```
 
-#### We want to have non-duplicated events by tracking the updated flag and only keep the latest updated information.
+#### Filtering non-duplicated events by tracking the updated flag and only keep the latest updated information.
 Select id where state is 'deleted'
 
 ```
@@ -41,9 +41,11 @@ create or replace temporary view tmp_deleted_event as (
   where state = 'deleted'
 );
 ```
-#### Creation of temporary view:
-* 'tmp_casted_event' from 'predicthq.tbl_bronze_events' where 'id' not in 'tmp_deleted_event'
+#### Creation of the temporary view:
+* 'tmp_casted_event' from 'predicthq.tbl_bronze_events' where 'id' not in 'tmp_deleted_event'.
 * cast(end as timestamp) selects the last unique timestamp records and removes other duplicates.
+* change data type from json for columns: entities, geo, labels, location, place_hierarchies, start
+* create a new column 'row_num' by adding row number to 'id'. It will be used to merge data later by unique id, since some recurrent events have the same id.
 ```
 create or replace temporary view tmp_casted_event as (
   select 
@@ -92,7 +94,7 @@ create or replace temporary view tmp_casted_event as (
   )
 );
 ```
-#### Creation of temporary view:
+#### Creation of the temporary view:
 * 'tmp_unified_events' from 'tmp_casted_event' where 'id' is not null and 'row_num' is 1
 
 #### Create
