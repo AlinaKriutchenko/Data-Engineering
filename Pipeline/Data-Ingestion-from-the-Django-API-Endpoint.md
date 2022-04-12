@@ -14,7 +14,7 @@ import json
 from pyspark.sql import functions as F
 ```
 
-### To set up timezone for datetime specific parameters.
+### To set up Timezone for datetime specific parameters.
 
 ```
 spark.conf.set("spark.sql.session.timeZone", "Australia/Melbourne")
@@ -22,7 +22,7 @@ spark.conf.set("spark.sql.session.timeZone", "Australia/Melbourne")
 
 ### A loop to get an url from the Django API endpoint.
 
-The authorization token required. <br/> Every url contains a single record. The following url receive by using 'next'. <br/> The 'next' is a method that returns a prepared request object for the next request in a redirection.
+The authorization token required. <br/> Every url contains a single record. The following url receives by using 'next'. <br/> The 'next' is a method that returns a prepared request object for the next request in a redirection.
 
 https://www.w3schools.com/python/ref_requests_response.asp <br/>
 https://docs.python-requests.org/en/latest/
@@ -96,7 +96,7 @@ output_df = (venue_df
 # output_df.write.saveAsTable('intern.tbl_bronze_venue')
 ```
 
-### Register a temp table (source) for new data
+### Registering a temp table (source) for new data
 
 The lifetime of this temporary table is tied to the SparkSession that was used to create this DataFrame.
 
