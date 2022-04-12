@@ -1,7 +1,10 @@
-# Predicthq-Bronze-To-Silver-Unified (PredictHQ). 
+# A creation of Predicthq-Bronze-To-Silver-Unified from PredictHQ data.
 
-A single unified events dataset where only unique active events are kept. \ <br/>
-Duplicates removal.  <br/> Adding 'event-group' columns for single and recurring events.
+* Duplicates removed
+* Only active events a kept.
+* Update
+* Removal deleted events from old records.
+* Adding an 'event-group' column for single (true) and recurring events (false).
 
 ### Import function module
 
@@ -12,8 +15,9 @@ https://spark.apache.org/docs/2.1.0/api/python/pyspark.sql.html#module-pyspark.s
 from pyspark.sql import functions
 ```
 
-#### Register 'event-group' table with 'is_recurring' and 'is_recurring' values
-
+#### Addition of an 'event-group' column:
+* where value of entity in **entities** column is 'recurring' return true
+* othewise return 'false'
 
 ```
 %python
@@ -27,7 +31,9 @@ def is_recurring(entities):
 spark.udf.register('is_recurring', is_recurring)
 ```
 
-#### We want to have non-duplicated events by tracking the `updated` flag and only keep the latest updated information
+#### We want to have non-duplicated events by tracking the updated flag and only keep the latest updated information.
+Select id where state is 'deleted'
+
 ```
 create or replace temporary view tmp_deleted_event as (
   select id
