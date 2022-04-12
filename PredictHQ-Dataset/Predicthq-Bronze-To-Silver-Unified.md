@@ -3,7 +3,7 @@
 * Duplicates removed
 * Only active events a kept
 * Merging new data updates
-* Removal deleted events from old records
+* Removing deleted events from old records
 * Adding an 'event-group' column for single (true) and recurring events (false)
 
 ### Import function module
@@ -16,8 +16,8 @@ from pyspark.sql import functions
 ```
 
 #### Addition of an 'event-group' column:
-* where value of entity in **entities** column is 'recurring' return true
-* othewise return 'false'
+* where the value of entity in **entities** column is 'recurring' return true
+* otherwise return 'false'
 
 ```
 %python
@@ -32,7 +32,7 @@ spark.udf.register('is_recurring', is_recurring)
 ```
 
 #### Filtering non-duplicated events by tracking the updated flag and only keep the latest updated information.
-Select id where state is 'deleted'
+Select id where the state is 'deleted'
 
 ```
 create or replace temporary view tmp_deleted_event as (
@@ -44,8 +44,8 @@ create or replace temporary view tmp_deleted_event as (
 #### Creation of the temporary view:
 * 'tmp_casted_event' from 'predicthq.tbl_bronze_events' where 'id' not in 'tmp_deleted_event'.
 * cast(end as timestamp) selects the last unique timestamp records and removes other duplicates.
-* change data type from json for columns: entities, geo, labels, location, place_hierarchies, start
-* create a new column 'row_num' by adding row number to 'id'. It will be used to merge data later by unique id, since some recurrent events have the same id.
+* change the data type from json for columns: entities, geo, labels, location, place_hierarchies, start
+* creation of the new column 'row_num' by adding a row number to 'id'. It will be used to merge data later by unique id, since some recurring events have the same id.
 ```
 create or replace temporary view tmp_casted_event as (
   select 
@@ -157,7 +157,7 @@ when matched
 when not matched
   then insert *;
 ```
-#### Remove deleted events in updated table
+#### Removing deleted events in the updated table
 ```
 delete from predicthq.tbl_silver_events tgt
 where tgt.id in (
@@ -165,7 +165,7 @@ where tgt.id in (
   from tmp_deleted_event
 );
 ```
-#### Optimize
+#### Optimizing
 ```
 optimize predicthq.tbl_silver_events
 zorder by updated, id;
