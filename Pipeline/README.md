@@ -24,7 +24,7 @@ The scheduled job provides daily ingestion of the new data.
 <img width="800" alt="schedule" src="https://user-images.githubusercontent.com/65950685/160787929-d29937a3-ea4b-4c67-bbf7-11faaaf8f002.png">
 
 
-## Set up email alerts if job fails
+## Set up email alerts if the job fails
 
 **Alerts**: Enter your email <br/>
 **Failure**: ✓
@@ -36,7 +36,7 @@ In case of failed job, the notification will be sent to your email. <br/> This p
 
 ### Pipeline structure
 
-Following the Medallion architecture, the data loaded to bronze using **API endpoint** (Venue-Landing-To-Bronze) and from **s3 bucket** using mount source (Track-Landing-To-Bronze). <br/> The **Track-Bronze-To-Silver** the merged the data from 2 Bronze level and prepare it for insight (Gold level).
+Following the Medallion architecture, the data loaded to bronze using **API endpoint** (Venue-Landing-To-Bronze) and from **s3 bucket** using mount source (Track-Landing-To-Bronze). <br/> The **Track-Bronze-To-Silver** the merged the data from the 2 Bronze level and prepare it for insight (Gold level).
 
 <img width="800" alt="pipeline_run" src="https://user-images.githubusercontent.com/65950685/160775879-bc6b2116-aceb-4cb6-91b5-2cd8ecaf5d69.png">
 
