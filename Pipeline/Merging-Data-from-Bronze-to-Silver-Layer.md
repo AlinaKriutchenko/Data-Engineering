@@ -1,6 +1,6 @@
-# Track-bronze-to-silver. 
+## Track-bronze-to-silver
 
-Merge venue information for account id, customer store location, business name to bronze track
+Merge venue data for account id, customer store location, business name with track data.
 
 
 ### Import function
@@ -60,7 +60,7 @@ silver_track = (track_bronze
              .select(track_bronze['*'], venue_bronze.business_name, venue_bronze.customer_store_id, venue_bronze.account_id, venue_bronze.account_name))
 ```
 
-### Create db_name.tbl_silver_track (target for future dumps)
+### Create db_name.tbl_silver_track (a target for future dumps)
 
 * **write.saveAsTable** saves **silver_track** pyspark dataframe a temp table.
 * **.write.mode("overwrite")** overwrites the table.
@@ -79,7 +79,7 @@ silver_track = (track_bronze
 * the left join used for **temp_venue** where **id** in temp_venue mathes **venue_id** in temp_track.
 
 Merging:
-* The new data merged into db_name.tbl_silver_track as tgt.
+* The new data merged into db_name.tbl_silver_track as target.
 * When the id is matched, the data updated. 
 * When the id is unmatched (new), the new records are inserted.
 
