@@ -2,7 +2,7 @@
 
 
 **Task name**: is the name of the job.<br/>
-**Type**: selected notebook that will be running <br/>
+**Type**: selected notebook that will be running. <br/>
 **Cluster**: With the newest databricks updates, every task in the pipeline can run on the same cluster.
 
 ### A job is created for every databricks notebook. <br/> Data Ingestion from the Django API endpoint (Landing to Bronze) example:
