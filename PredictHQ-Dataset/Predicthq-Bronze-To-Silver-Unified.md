@@ -4,7 +4,7 @@
 * Only active events a kept
 * Merging new data updates
 * Removing deleted events from old records
-* Adding an 'event-group' column for single (true) and recurring events (false)
+* Adding an 'event-group' column for single (true) and recurring events (false).
 
 ### Import function module
 
