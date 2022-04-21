@@ -59,7 +59,6 @@ account = get_data(account_url)
 ```
 
 
-%md
 ### Reading spark dataframe
 Adding `date` column to venue_df <br />
 Renaming `name` columns to avoid duplication in status_df and account_df
@@ -93,7 +92,7 @@ output_df = (venue_df
 
 ```
 ## Run this only once
-# output_df.write.saveAsTable('intern.tbl_bronze_venue')
+# output_df.write.saveAsTable('database.tbl_bronze_venue')
 ```
 
 ### Registering a temp table (source) for new data
@@ -110,7 +109,7 @@ output_df.registerTempTable('tmp_source_venue')
 https://docs.databricks.com/spark/latest/spark-sql/language-manual/delta-merge-into.html
 ```
 %sql
-merge into intern.tbl_bronze_venue target
+merge into database.tbl_bronze_venue target
   using tmp_source_venue source
     on source.id = target.id and source.date = target.date
 when matched
